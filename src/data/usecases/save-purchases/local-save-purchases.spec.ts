@@ -4,11 +4,17 @@ import {ICacheStore} from "../protocols/cache/cache-store";
 class CacheStoreSpy implements ICacheStore {
     deleteCallsCount = 0
     insertCallsCount = 0
-    key: string
+    deleteKey: string
+    insertKey: string
 
-    delete(key) {
-        this.key = key
+    delete(key): void {
+        this.deleteKey = key
         this.deleteCallsCount++
+    }
+
+    insert(key): void {
+        this.insertKey = key
+        this.insertCallsCount++
     }
 }
 
@@ -38,7 +44,7 @@ describe('LocalSavePurchases', () => {
         const { cacheStore, sut } = makeSut()
         await sut.save()
         expect(cacheStore.deleteCallsCount).toBe(1)
-        expect(cacheStore.key).toBe('purchases')
+        expect(cacheStore.deleteKey).toBe('purchases')
     })
 
     test('Should not insert new Cache if delete fails',() => {
@@ -46,9 +52,18 @@ describe('LocalSavePurchases', () => {
         jest.spyOn(cacheStore, 'delete').mockImplementationOnce(() => {
             throw new Error()
         })
-        const promisse = sut.save()
+        const promise = sut.save()
         expect(cacheStore.insertCallsCount).toBe(0)
-        expect(promisse).rejects.toThrow()
+        expect(promise).rejects.toThrow()
+    })
+
+    test('Should insert new Cache if delete succeeds',async () => {
+        const { cacheStore, sut } = makeSut()
+        await sut.save()
+        expect(cacheStore.deleteCallsCount).toBe(1)
+        expect(cacheStore.insertCallsCount).toBe(1)
+        expect(cacheStore.insertKey).toBe('purchases')
+
     })
 })
 
