@@ -2,10 +2,10 @@ import {ICacheStore} from "../protocols/cache/cache-store";
 import {SavePurchases} from "../../domain/usecases/save-purchases";
 
 export class CacheStoreSpy implements ICacheStore {
+    insertValues: Array<SavePurchases.Params> = []
     messages: Array<CacheStoreSpy.Message> = []
     deleteKey: string
     insertKey: string
-    insertValues: Array<SavePurchases.Params> = []
 
     delete(key): void {
         this.messages.push(CacheStoreSpy.Message.delete)
