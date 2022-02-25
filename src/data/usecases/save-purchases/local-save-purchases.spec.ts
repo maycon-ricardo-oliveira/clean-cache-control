@@ -1,4 +1,3 @@
-import {ICacheStore} from "../../protocols/cache/cache-store";
 import {mockPurchases} from "../../tests/mock-purchases";
 import {LocalSavePurchases} from "./local-save-purchases";
 import {CacheStoreSpy} from "../../tests/mock-cache";
