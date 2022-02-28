@@ -7,13 +7,13 @@ export class LocalLoadPurchases implements ISavePurchases, ILoadPurchases {
     private  readonly key = 'purchases';
     constructor(
         private readonly cacheStore: ICacheStore,
-        private readonly timestamp: Date
+        private readonly currentDate: Date
         ) {
     }
 
     async save (purchases: Array<SavePurchases.Params>): Promise<void> {
         this.cacheStore.replace(this.key, {
-            timestamp: this.timestamp,
+            timestamp: this.currentDate,
             value: purchases,
         })
     }
