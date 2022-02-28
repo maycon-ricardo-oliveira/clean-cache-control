@@ -24,7 +24,7 @@ export class LocalLoadPurchases implements ISavePurchases, ILoadPurchases {
             const maxAge = new Date(cache.timestamp)
             maxAge.setDate(maxAge.getDate() + 3)
 
-            if (maxAge < this.currentDate) {
+            if (maxAge <= this.currentDate) {
                 throw new Error()
             }
 
