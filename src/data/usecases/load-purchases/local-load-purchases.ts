@@ -34,4 +34,11 @@ export class LocalLoadPurchases implements ISavePurchases, ILoadPurchases {
             return []
         }
     }
+    validate(): void {
+        try {
+           this.cacheStore.fetch(this.key)
+        } catch(error) {
+            this.cacheStore.delete(this.key)
+        }
+    }
 }
