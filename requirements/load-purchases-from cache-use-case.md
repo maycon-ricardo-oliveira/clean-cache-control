@@ -14,4 +14,6 @@
 ## Exceção - Cache vazio
 1. Sistema retorna uma lista vazia
 
-
+## Exceção - Erro ao carregar dados do Cache
+1. Sistema limpa o Cache
+1. Sistema retorna uma lista vazia
