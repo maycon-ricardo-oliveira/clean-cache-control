@@ -3,6 +3,7 @@ import {ISavePurchases, SavePurchases} from "../../../domain/usecases/save-purch
 
 
 export class LocalLoadPurchases implements ISavePurchases {
+    private  readonly key = 'purchases';
     constructor(
         private readonly cacheStore: ICacheStore,
         private readonly timestamp: Date
@@ -11,9 +12,13 @@ export class LocalLoadPurchases implements ISavePurchases {
 
     async save (purchases: Array<SavePurchases.Params>): Promise<void> {
         this.cacheStore.delete('purchases')
-        this.cacheStore.insert('purchases', {
+        this.cacheStore.insert(this.key, {
             timestamp: this.timestamp,
             value: purchases,
         })
+    }
+
+    async loadAll(): Promise<void> {
+        this.cacheStore.fetch(this.key)
     }
 }

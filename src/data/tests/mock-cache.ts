@@ -3,39 +3,46 @@ import {SavePurchases} from "../../domain/usecases/save-purchases";
 
 export class CacheStoreSpy implements ICacheStore {
     insertValues: Array<SavePurchases.Params> = []
-    messages: Array<CacheStoreSpy.Message> = []
+    actions: Array<CacheStoreSpy.Action> = []
     deleteKey: string
     insertKey: string
+    fetchKey: string
 
-    delete(key): void {
-        this.messages.push(CacheStoreSpy.Message.delete)
+    fetch(key: string): void {
+        this.actions.push(CacheStoreSpy.Action.fetch)
+        this.fetchKey = key
+    }
+
+    delete(key: string): void {
+        this.actions.push(CacheStoreSpy.Action.delete)
         this.deleteKey = key
     }
 
-    insert(key, value: any): void {
-        this.messages.push(CacheStoreSpy.Message.insert)
+    insert(key: string, value: any): void {
+        this.actions.push(CacheStoreSpy.Action.insert)
         this.insertValues = value
         this.insertKey = key
     }
 
     simulateDeleteError(): void {
         jest.spyOn(CacheStoreSpy.prototype, 'delete').mockImplementationOnce(() => {
-            this.messages.push(CacheStoreSpy.Message.delete)
+            this.actions.push(CacheStoreSpy.Action.delete)
             throw new Error()
         })
     }
 
     simulateInsertError(): void {
         jest.spyOn(CacheStoreSpy.prototype, 'insert').mockImplementationOnce(() => {
-            this.messages.push(CacheStoreSpy.Message.insert)
+            this.actions.push(CacheStoreSpy.Action.insert)
             throw new Error()
         })
     }
 }
 
 export namespace CacheStoreSpy {
-    export enum Message {
+    export enum Action {
         delete,
-        insert
+        insert,
+        fetch
     }
 }
