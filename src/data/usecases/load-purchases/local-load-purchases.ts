@@ -2,6 +2,7 @@ import {ICacheStore} from "../../protocols/cache/cache-store";
 import {ISavePurchases, SavePurchases} from "../../../domain/usecases/save-purchases";
 import {ILoadPurchases, LoadPurchases} from "../../../domain/usecases/load-purchases";
 import {CachePolicy} from "../../protocols/cache/cache-policy";
+import {throws} from "assert";
 
 
 export class LocalLoadPurchases implements ISavePurchases, ILoadPurchases {
@@ -35,7 +36,13 @@ export class LocalLoadPurchases implements ISavePurchases, ILoadPurchases {
     }
     validate(): void {
         try {
-           this.cacheStore.fetch(this.key)
+
+           const cache = this.cacheStore.fetch(this.key)
+
+            if (!CachePolicy.validate(cache.timestamp, this.currentDate)) {
+                throw new Error()
+            }
+
         } catch(error) {
             this.cacheStore.delete(this.key)
         }
