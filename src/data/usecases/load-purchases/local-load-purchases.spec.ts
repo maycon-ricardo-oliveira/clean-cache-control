@@ -1,4 +1,3 @@
-import {mockPurchases} from "../../tests/mock-purchases";
 import {LocalLoadPurchases} from "./local-load-purchases";
 import {CacheStoreSpy} from "../../tests/mock-cache";
 
